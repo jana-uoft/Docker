@@ -1,0 +1,7 @@
+#!/bin/bash
+
+IMAGE=php:7.4
+COMMAND=${0##*/}
+ARGS=$@
+
+bash run $IMAGE $COMMAND "$ARGS"

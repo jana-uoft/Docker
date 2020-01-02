@@ -1,0 +1,7 @@
+#!/bin/bash
+
+IMAGE=jana19/node:12
+COMMAND=${0##*/}
+ARGS=$@
+
+bash run $IMAGE $COMMAND "$ARGS"

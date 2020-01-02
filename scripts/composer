@@ -1,0 +1,7 @@
+#!/bin/bash
+
+IMAGE=composer:1.9
+COMMAND=${0##*/}
+ARGS=$@
+
+bash run $IMAGE $COMMAND "$ARGS"

@@ -1,0 +1,21 @@
+#!/bin/bash
+
+IMAGE=$1
+COMMAND=$2
+ARGS=$3
+FLAGS="
+  -it
+  --rm
+  --volume "$PWD":"$PWD"
+  --workdir "$PWD"
+  --user=1000:1000
+  $4
+"
+
+if [ "$ARGS" = "bash" ]; then
+  docker run $FLAGS $IMAGE bash
+else
+  docker run $FLAGS $IMAGE $COMMAND $ARGS
+fi
+
+exit $?
