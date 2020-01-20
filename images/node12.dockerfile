@@ -1,6 +1,5 @@
-FROM node:12-alpine
+FROM node:12
 
-RUN apk add --update && \
-  npm install --global \
-    eslint \
-    prettier 
+RUN npm install --global \
+  eslint \
+  prettier

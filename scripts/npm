@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE=jana19/node:12
+IMAGE=jana19/node:development
 COMMAND=${0##*/}
 ARGS=$@
 
