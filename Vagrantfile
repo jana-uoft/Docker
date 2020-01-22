@@ -1,3 +1,4 @@
+# Allocate max CPUS & RAM from host. FULL POWER! 
 LINUX = RUBY_PLATFORM =~ /linux/
 OSX = RUBY_PLATFORM =~ /darwin/
 WINDOWS = (/cygwin|mswin|mingw|bccwin|wince|emx/ =~ RUBY_PLATFORM) != nil
@@ -20,12 +21,24 @@ Vagrant.configure(2) do |config|
   config.ssh.forward_agent = true
   config.vm.provider "virtualbox" do |vb|
     vb.name = "dockerbox"
-    vb.cpus = CPUS
-    vb.memory = MEM
+    vb.cpus = (CPUS * 0.75).round
+    vb.memory = (MEM * 0.75).round
   end
 
-  # Install Docker & Docker-Compose
-  config.vm.provision "shell", inline: <<-SHELL
+  # Install zsh and oh-my-zsh
+  config.vm.provision :shell, inline: "apt-get -y install zsh"
+  config.vm.provision "zsh", type: "shell", privileged: false, inline: <<-SHELL
+    git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
+    cp ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+    # Change the oh my zsh default theme.
+    sed -i 's/ZSH_THEME="robbyrussell"/ZSH_THEME="agnoster"/g' ~/.zshrc
+    # Enable some useful plugins
+    sed -i 's/plugins=(git)/plugins=(git z sudo)/g' ~/.zshrc
+  SHELL
+  config.vm.provision :shell, inline: "sudo chsh -s /bin/zsh vagrant"
+
+  # Install docker & docker-Compose
+  config.vm.provision "docker", type: "shell", inline: <<-SHELL
     wget -qO- https://get.docker.com/ | sh
     sudo usermod -aG docker vagrant
     newgrp docker
@@ -33,6 +46,3 @@ Vagrant.configure(2) do |config|
     sudo chmod +x /usr/local/bin/docker-compose
   SHELL
 end
-
-
-
