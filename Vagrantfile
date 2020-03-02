@@ -45,4 +45,13 @@ Vagrant.configure(2) do |config|
     sudo curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
   SHELL
+
+  # Configure git
+  config.vm.provision "git", type: "shell", privileged: false, inline: <<-SHELL
+    git config --global user.name "Jana Rajakumar"
+    git config --global user.email jana.rajakumar@utoronto.ca
+    git config --global core.editor "vim"
+    export VISUAL=vim
+    export EDITOR="$VISUAL"
+  SHELL
 end
